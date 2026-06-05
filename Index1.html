@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ana Paola 💖</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Georgia, serif;
+    background: linear-gradient(135deg,#ffe4ef,#fff8fc,#fff1d6);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow-x:hidden;
+}
+
+.card{
+    width:min(90%,750px);
+    background:white;
+    padding:35px;
+    border-radius:30px;
+    text-align:center;
+    box-shadow:0 15px 50px rgba(0,0,0,.15);
+    animation:appear .6s ease;
+    position: relative;
+    z-index: 10;
+}
+
+.slide{
+    display:none;
+}
+
+.active{
+    display:block;
+}
+
+h1{
+    color:#d96c96;
+    margin-bottom:15px;
+    font-size:3rem;
+}
+
+p{
+    margin-bottom:15px;
+    font-size:1.1rem;
+    color:#333;
+}
+
+button{
+    border:none;
+    cursor:pointer;
+    border-radius:999px;
+    transition:.25s;
+    font-family: Georgia, serif;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.yes-btn{
+    font-size:2.3rem;
+    padding:22px 55px;
+    background:#ff8db7;
+    color:white;
+    box-shadow: 0 5px 15px rgba(255, 141, 183, 0.4);
+}
+
+.no-btn{
+    font-size:.4rem;
+    opacity:.2;
+    padding:5px;
+}
+
+.option{
+    display:block;
+    width:90%;
+    margin:10px auto;
+    padding:14px;
+    background:#ffe4ef;
+    font-size:1rem;
+    color:#333;
+    box-shadow: 0 2px 5px rgba(0,0,0,.05);
+}
+
+.option:hover{
+    background:#ffd4e5;
+}
+
+.selected{
+    outline:4px solid hotpink;
+    background:#ffb3d9;
+}
+
+.next-btn{
+    margin-top:15px;
+    background:#ff8db7;
+    color:white;
+    padding:12px 24px;
+    box-shadow: 0 5px 15px rgba(255, 141, 183, 0.4);
+}
+
+.hidden{
+    display:none;
+}
+
+.final-title{
+    font-size:2.5rem;
+    color:#d96c96;
+    margin-top:20px;
+}
+
+.floating{
+    position:fixed;
+    font-size:24px;
+    animation:floatUp linear forwards;
+    bottom: -50px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(100vh);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-120px);
+        opacity:0;
+    }
+}
+
+@keyframes appear{
+    from{
+        opacity:0;
+        transform:scale(.85);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div id="s1" class="slide active">
+        <h1>💌 ¿Date conmigo? 💌</h1>
+        <p>Prometo que esta encuesta es completamente imparcial.</p>
+        <button class="yes-btn" onclick="go(2)">SÍ 💖</button>
+        <br><br>
+        <button class="no-btn">No</button>
+    </div>
+
+    <div id="s2" class="slide">
+        <h1>🌷 Esperaaa 🌷</h1>
+        <p>Ya dijiste que sí 🤭</p>
+        <p><b>Solo una cosita...</b><br>¿Cuál es tu date soñada?</p>
+
+        <button class="option" onclick="pickDate(this,'🎨 Something arty')">🎨 Something arty</button>
+        <button class="option" onclick="pickDate(this,'🎬 Movie night')">🎬 Movie night</button>
+        <button class="option" onclick="pickDate(this,'🍝 Dinner')">🍝 Dinner</button>
+        <button class="option" onclick="pickDate(this,'🧺 Picnic outside')">🧺 Picnic outside</button>
+        <button class="option" onclick="pickDate(this,'🎲 Fun & game')">🎲 Fun & game</button>
+        <button class="option" onclick="pickDate(this,'☕ Coffee')">☕ Coffee</button>
+
+        <button id="next2" class="next-btn hidden" onclick="go(3)">Anotado... ✍️</button>
+    </div>
+
+    <div id="s3" class="slide">
+        <h1>🎀 Perfecto 🎀</h1>
+        <p>¿Cuándo estás libre?</p>
+
+        <button class="option" onclick="pickTime(this,'💕 Cuando sea para ti')">💕 Cuando sea para ti</button>
+        <button class="option" onclick="pickTime(this,'📅 Esta semana')">📅 Esta semana</button>
+        <button class="option" onclick="pickTime(this,'🌸 La próxima semana')">🌸 La próxima semana</button>
+        <button class="option" onclick="pickTime(this,'✨ Pronto')">✨ Pronto</button>
+
+        <button id="next3" class="next-btn hidden" onclick="finish()">Continuar 💌</button>
+    </div>
+
+    <div id="s4" class="slide">
+        <h1>🎉 ¡Qué emoción! 🎉</h1>
+        <p id="summary"></p>
+        <div class="final-title">Será la mejor date de tu vida,<br>ANA PAOLA 💖</div>
+        <br>
+        <p>Ya quedó anotado ✨</p>
+    </div>
+
+</div>
+
+<script>
+let dateChoice = "";
+let timeChoice = "";
+
+function go(n){
+    document.querySelectorAll(".slide").forEach(s=>s.classList.remove("active"));
+    document.getElementById("s"+n).classList.add("active");
+}
+
+function pickDate(btn,val){
+    dateChoice = val;
+    document.querySelectorAll("#s2 .option").forEach(x=>x.classList.remove("selected"));
+    btn.classList.add("selected");
+    document.getElementById("next2").classList.remove("hidden");
+}
+
+function pickTime(btn,val){
+    timeChoice = val;
+    document.querySelectorAll("#s3 .option").forEach(x=>x.classList.remove("selected"));
+    btn.classList.add("selected");
+    document.getElementById("next3").classList.remove("hidden");
+}
+
+function finish(){
+    go(4);
+
+    document.getElementById("summary").innerHTML =
+    "Date soñada: <b>"+dateChoice+"</b><br><br>Disponibilidad: <b>"+timeChoice+"</b>";
+
+    // Lluvia de corazones
+    for(let i=0;i<120;i++){
+        const e = document.createElement("div");
+        e.className = "floating";
+        e.innerHTML = Math.random() > 0.5 ? "💖" : "🎀";
+        e.style.left = Math.random()*100 + "vw";
+        e.style.animationDuration = (3 + Math.random()*4) + "s";
+        document.body.appendChild(e);
+    }
+}
+</script>
+
+</body>
+</html>
